@@ -10,6 +10,7 @@ from model import BiasedMatrixFactorization
 class Configs:
     epochs: int = 30
     batch_size: int = 32
+    learning_rate: float = 0.01
 
 configs = Configs()
 
@@ -19,7 +20,7 @@ item_num = dataset[:][1].max() + 1
 
 model = BiasedMatrixFactorization(user_num, item_num)
 criterion = torch.nn.MSELoss()
-optimizer = torch.optim.SparseAdam(model.parameters(), lr=0.01)
+optimizer = torch.optim.SparseAdam(model.parameters(), lr=configs.learning_rate)
 
 train_loader = DataLoader(dataset, batch_size=configs.batch_size, shuffle=True)
 for epoch in range(configs.epochs):
