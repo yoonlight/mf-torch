@@ -26,11 +26,11 @@ train_loader = DataLoader(dataset, batch_size=configs.batch_size, shuffle=True)
 for epoch in range(configs.epochs):
     loop = tqdm(train_loader)
     for bid, batch in enumerate(loop):
-        u, i, r = batch[0], batch[1], batch[2]
-        r = r.float()
+        users, items, ratings = batch[0], batch[1], batch[2]
+        ratings = ratings.float()
         # forward pass
-        preds = model(u, i)
-        loss = criterion(preds, r)
+        preds = model(users, items)
+        loss = criterion(preds, ratings)
 
         # backward and optimize
         optimizer.zero_grad()
