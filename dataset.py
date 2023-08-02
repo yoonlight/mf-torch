@@ -19,6 +19,7 @@ class SDRRateDataset(Dataset):
         self.vocab = Counter(self.dataset["USER_ID"])
         self.vocab = sorted(self.vocab, key=self.vocab.get, reverse=True)
         self.word2idx = {word: ind for ind, word in enumerate(self.vocab)}
+        self.idx2word = {ind: word for ind, word in enumerate(self.vocab)}
         self.user_size = len(self.vocab)
         self.encoded_user = [self.word2idx[word] for word in self.dataset["USER_ID"]]
 

@@ -24,7 +24,7 @@ class Configs:
 configs = Configs()
 
 dataset = SDRRateDataset()
-user_num = dataset.user_size + 1
+user_num = dataset.user_size
 item_num = dataset[:][1].max() + 1
 
 model = BiasedMatrixFactorization(user_num, item_num)
@@ -142,7 +142,25 @@ def recommend(user_id: int):
     df.to_csv(f"outputs/results-{user_id}.csv")
 
 
+def complete_table():
+    scores = []
+    ratings_csv = pd.read_csv("data/sdp_star_rating.csv")
+    for user_id in range(0, user_num):
+        for item_id in range(1, item_num):
+            score = predict(user_id, item_id)
+            user_exist = ratings_csv["USER_ID"] == dataset.idx2word[user_id]
+            item_exist = ratings_csv["PRD_SEQ"] == item_id
+            star_exist = ratings_csv[user_exist][item_exist]
+            star = 0 if star_exist.empty else star_exist["STAR"].values[0]
+            scores.append({"USER_ID": dataset.idx2word[user_id],
+                           "PRD_SEQ": item_id,
+                           "STAR": star, "PREDICTED_SCORE": score})
+    df = pd.DataFrame(scores)
+    df.to_csv(f"outputs/results-{int(time.time())}.csv")
+
+
 # web -> request -> item_id -> server -> recommend_itme(item_id) -> response -> web
 recommend_item(1)
 item_similarity(1)
 recommend(1)
+complete_table()
