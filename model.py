@@ -1,5 +1,6 @@
 import torch
 
+
 class BiasedMatrixFactorization(torch.nn.Module):
     def __init__(self, n_users, n_items, n_factors=20):
         super().__init__()
