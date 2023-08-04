@@ -112,6 +112,8 @@ def item_similarity(selected_item_id: int):
 def predict(user_id: int, item_id: int) -> np.ndarray:
     result: torch.Tensor = model(torch.Tensor([user_id]).to(
         torch.int64), torch.Tensor([item_id]).to(torch.int64))
+    result = torch.where(result < 0, 1, result)
+    result = torch.where(result > 5, 5, result)
     return result.detach().numpy()
 
 
