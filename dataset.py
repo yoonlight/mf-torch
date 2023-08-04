@@ -14,8 +14,8 @@ class RateDataset(Dataset):
 
 
 class SDRRateDataset(Dataset):
-    def __init__(self):
-        self.dataset = pd.read_csv("data/sdp_star_rating.csv")
+    def __init__(self, filename: str):
+        self.dataset = pd.read_csv(filename)
         self.vocab = Counter(self.dataset["USER_ID"])
         self.vocab = sorted(self.vocab, key=self.vocab.get, reverse=True)
         self.word2idx = {word: ind for ind, word in enumerate(self.vocab)}

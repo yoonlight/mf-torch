@@ -11,7 +11,7 @@ import pandas as pd
 
 from dataset import SDRRateDataset
 from model import BiasedMatrixFactorization
-
+from command import parse
 
 @dataclass
 class Configs:
@@ -22,8 +22,9 @@ class Configs:
 
 
 configs = Configs()
+filename = parse()
 
-dataset = SDRRateDataset()
+dataset = SDRRateDataset(filename)
 user_num = dataset.user_size
 item_num = dataset[:][1].max() + 1
 
@@ -144,7 +145,7 @@ def recommend(user_id: int):
 
 def complete_table():
     scores = []
-    ratings_csv = pd.read_csv("data/sdp_star_rating.csv")
+    ratings_csv = pd.read_csv(filename)
     for user_id in range(0, user_num):
         for item_id in range(1, item_num):
             score = predict(user_id, item_id)
